@@ -6,8 +6,9 @@ import frc.robot.subsystems.ExtenderSubsystem;
 import frc.robot.subsystems.Gamepad;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.subsystems.GripperTiltSubsystem;
+import frc.robot.subsystems.CameraSubsystem;
+import frc.robot.subsystems.VisionProcessingSubsystem;
 import frc.robot.utilities.LoggingSystem;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,6 +27,8 @@ public class Robot extends TimedRobot {
     private GripperSubsystem gripper;
     private ExtenderSubsystem extender;
     private GripperTiltSubsystem gripperTilt;
+    private CameraSubsystem camera;
+    private VisionProcessingSubsystem visionProcessor;
     
     // ===== CONTROLLER =====
     private Joystick controller;
@@ -82,6 +85,7 @@ public class Robot extends TimedRobot {
         controlGripperTilt();
         controlExtender();
         controlDrivetrain();
+        controlCamera();
         
         // Update all subsystems
         updateSubsystems();
@@ -144,6 +148,8 @@ public class Robot extends TimedRobot {
         extender = new ExtenderSubsystem(EXTENDER_SERVO_PORT);
         gripperTilt = new GripperTiltSubsystem(GRIPPER_TILT_SERVO_PORT);
         drivetrain = new DrivetrainSubsystem();
+        camera = new CameraSubsystem();
+        visionProcessor = new VisionProcessingSubsystem();
     }
     
     private void setInitialPositions() {
@@ -267,9 +273,10 @@ public class Robot extends TimedRobot {
     private void controlDrivetrain() {
         // Analog sticks control drivetrain
         double forwardSpeed = -controller.getRawAxis(Gamepad.LEFT_ANALOG_Y) * MAX_DRIVE_SPEED;
+        double strafeSpeed = controller.getRawAxis(Gamepad.LEFT_ANALOG_X) * MAX_DRIVE_SPEED;
         double rotationSpeed = controller.getRawAxis(Gamepad.RIGHT_ANALOG_X) * MAX_ROTATION_SPEED;
         
-        drivetrain.drive(forwardSpeed, rotationSpeed);
+        //drivetrain.drive(forwardSpeed, strafeSpeed, rotationSpeed);
     }
 
     // ===== UPDATE METHODS =====
@@ -279,6 +286,96 @@ public class Robot extends TimedRobot {
         gripper.periodic();
         extender.periodic();
         gripperTilt.periodic();
+        camera.periodic();
+        visionProcessor.periodic();
+    }
+    
+    // Counter for controlling camera scan frequency
+    private int cameraCounter = 0;
+    
+    /**
+     * Control camera and vision processing subsystems
+     * - Camera subsystem handles capturing images
+     * - Vision processing subsystem handles analyzing the images
+     */
+    private void controlCamera() {
+        // Run continuous scanning/detection
+        cameraCounter++;
+        
+        // Every 50 cycles, capture an image and process for barcode detection
+        if (cameraCounter % 50 == 0) {
+            // Get an image from the camera
+            byte[] imageData = camera.captureImage();
+            
+            // Legacy call for backward compatibility
+            camera.scanBarcode();
+            
+            // Process the image using the vision processor
+            if (imageData != null && imageData.length > 1) {
+                boolean barcodeDetected = visionProcessor.processBarcodeDetection(imageData);
+                
+                if (barcodeDetected) {
+                    LoggingSystem.logInfo("Barcode detected: " + visionProcessor.getBarcodeData());
+                }
+            } else {
+                // If camera capture failed, fall back to simulation
+                boolean barcodeDetected = visionProcessor.processBarcodeDetection(new byte[1]);
+                
+                if (barcodeDetected) {
+                    LoggingSystem.logInfo("Simulated barcode detected: " + visionProcessor.getBarcodeData());
+                }
+            }
+        }
+        
+        // Every 50 cycles, offset by 25, process for color detection
+        if (cameraCounter % 50 == 25) {
+            // Get an image from the camera
+            byte[] colorImageData = camera.captureImage();
+            
+            // Legacy call for backward compatibility
+            camera.detectColors();
+            
+            // Process the image for color detection
+            if (colorImageData != null && colorImageData.length > 1) {
+                visionProcessor.processColorDetection(colorImageData);
+            } else {
+                // If camera capture failed, fall back to simulation
+                visionProcessor.processColorDetection(new byte[1]);
+            }
+            
+            // Log the color detection results
+            LoggingSystem.logInfo("Color detection - Red: " + visionProcessor.isRedDetected() + 
+                                ", Yellow: " + visionProcessor.isYellowDetected() + 
+                                ", Green: " + visionProcessor.isGreenDetected());
+        }
+        
+        // Every 10 cycles, try to track targets
+        if (cameraCounter % 10 == 5) {
+            // Get an image from the camera
+            byte[] trackingImageData = camera.captureImage();
+            
+            boolean targetTracked = false;
+            
+            if (trackingImageData != null && trackingImageData.length > 1) {
+                targetTracked = visionProcessor.processTargetTracking(trackingImageData);
+            } else {
+                // If camera capture failed, fall back to simulation
+                targetTracked = visionProcessor.processTargetTracking(new byte[1]);
+            }
+            
+            if (targetTracked) {
+                // If a target is found, calculate distance
+                double distance = visionProcessor.calculateTargetDistance();
+                LoggingSystem.logInfo("Target tracked at position X: " + 
+                    visionProcessor.getTargetXPosition() + ", Y: " + 
+                    visionProcessor.getTargetYPosition() + ", Distance: " + distance);
+            }
+        }
+        
+        // Reset counter to prevent integer overflow
+        if (cameraCounter > 10000) {
+            cameraCounter = 0;
+        }
     }
     
     private void updateButtonStates() {

@@ -60,6 +60,13 @@ dependencies {
 
     //implementation files('libs/amcu-wrapper.jar')
 
+    // ZXing library for barcode scanning
+    implementation 'com.google.zxing:core:3.5.1'
+    implementation 'com.google.zxing:javase:3.5.1'
+    
+    // OpenCV for Java vision processing (this is separate from the WPILib's included OpenCV)
+    // Note: OpenCV may already be included in your WPILib distribution
+    // implementation 'org.openpnp:opencv:4.6.0-0'
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
