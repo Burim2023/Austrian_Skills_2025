@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
     private Joystick controller;
     
     // ===== SPEED CONSTANTS =====
-    private final double MAX_DRIVE_SPEED = 0.10; // m/s
+    private final double MAX_DRIVE_SPEED = 0.05; // m/s
     private final double MAX_ROTATION_SPEED = 1.0; // rad/s
     
     // ===== BUTTON STATE TRACKING =====
@@ -124,6 +124,7 @@ public class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         updateSubsystems();
+
     }
 
     // ===== DISABLED MODE =====
@@ -286,7 +287,8 @@ public class Robot extends TimedRobot {
         double strafeSpeed = controller.getRawAxis(Gamepad.LEFT_ANALOG_X) * MAX_DRIVE_SPEED;
         double rotationSpeed = controller.getRawAxis(Gamepad.RIGHT_ANALOG_X) * MAX_ROTATION_SPEED;
         
-        //drivetrain.drive(forwardSpeed, strafeSpeed, rotationSpeed);
+        // Drive the robot with the joystick values
+        drivetrain.drive(forwardSpeed, strafeSpeed, rotationSpeed);
     }
 
     // ===== UPDATE METHODS =====
