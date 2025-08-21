@@ -28,7 +28,17 @@ public class Robot extends TimedRobot {
     private ExtenderSubsystem extender;
     private GripperTiltSubsystem gripperTilt;
     private CameraSubsystem camera;
-    private VisionProcessingSubsystem visionProcessor;
+    private static VisionProcessingSubsystem visionProcessor; // Made static so other subsystems can access it
+    
+    /**
+     * Get the vision processor subsystem
+     * This method allows other subsystems to access the vision processor
+     * 
+     * @return The vision processor subsystem instance
+     */
+    public static VisionProcessingSubsystem getVisionProcessor() {
+        return visionProcessor;
+    }
     
     // ===== CONTROLLER =====
     private Joystick controller;
