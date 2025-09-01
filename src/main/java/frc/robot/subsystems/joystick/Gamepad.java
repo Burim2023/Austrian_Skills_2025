@@ -1,4 +1,4 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.joystick;
 
 /**
  * Constants and utility methods for the Studica Multicontroller

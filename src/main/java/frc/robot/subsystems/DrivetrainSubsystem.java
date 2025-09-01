@@ -17,12 +17,12 @@ public class DrivetrainSubsystem {
     private final int RIGHT_MOTOR_CHANNEL = 2;
     
     // Gyro for rotation measurements
-    private final ADXRS450_Gyro gyro;
+    private static ADXRS450_Gyro gyro;
     
     // Simple position tracking
-    private double xPosition = 0.0;
-    private double yPosition = 0.0;
-    private double angle = 0.0;
+    private static double xPosition = 0.0;
+    private static double yPosition = 0.0;
+    private static double angle = 0.0;
     
     public DrivetrainSubsystem() {
         // Initialize gyro
@@ -38,7 +38,7 @@ public class DrivetrainSubsystem {
         LoggingSystem.logInfo("Gyro calibration complete");
     }
     
-    public void resetOdometry() {
+    public static void resetOdometry() {
         xPosition = 0.0;
         yPosition = 0.0;
         angle = 0.0;
@@ -61,7 +61,7 @@ public class DrivetrainSubsystem {
      * @param vx Forward velocity (m/s)
      * @param omega Rotational velocity (rad/s)
      */
-    public void drive(double vx, double omega) {
+    public static void drive(double vx, double omega) {
         // In a real implementation, this would set motor speeds
         // For now, just display values on dashboard
         SmartDashboard.putNumber("Forward Speed", vx);
@@ -76,7 +76,7 @@ public class DrivetrainSubsystem {
     /**
      * Stop all drivetrain motors
      */
-    public void stop() {
+    public static void stop() {
         // In a real implementation, this would stop motors
         SmartDashboard.putNumber("Forward Speed", 0);
         SmartDashboard.putNumber("Rotation Speed", 0);
