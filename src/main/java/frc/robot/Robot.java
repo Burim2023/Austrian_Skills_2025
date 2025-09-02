@@ -9,6 +9,7 @@ import frc.robot.subsystems.DrivetrainSubsystem;
 import frc.robot.subsystems.ExtenderSubsystem;
 import frc.robot.subsystems.GripperSubsystem;
 import frc.robot.subsystems.GripperTiltSubsystem;
+import frc.robot.utilities.ShuffleboardData;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -23,6 +24,7 @@ public class Robot extends TimedRobot {
     GripperTiltSubsystem gripperTilt = new GripperTiltSubsystem(Constants.GRIPPER_TILT_SERVO_PORT);
     DrivetrainSubsystem drivetrain = new DrivetrainSubsystem();
     JoystickSubsystem joystickSub = new JoystickSubsystem();
+    ShuffleboardData loadData = new ShuffleboardData();
 
     
     // ===== ROBOT INITIALIZATION =====
@@ -31,6 +33,7 @@ public class Robot extends TimedRobot {
         arm.initializeToMiddle();
         LoggingSystem.setupLogging();
         LoggingSystem.logInfo("Robot initialization started");
+
     }
 
     // ===== TELEOP MODE =====
