@@ -1,8 +1,8 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.gripper;
 
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.utilities.LoggingSystem;
+import frc.robot.utilities.logger.LoggingSystem;
 
 /**
  * Subsystem for controlling the tilt angle of the gripper mechanism using a servo

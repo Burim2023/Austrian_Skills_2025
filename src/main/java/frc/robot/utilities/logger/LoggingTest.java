@@ -1,4 +1,4 @@
-package frc.robot.utilities;
+package frc.robot.utilities.logger;
 
 public class LoggingTest {
     public static void main(String[] args) {

@@ -1,7 +1,7 @@
 package frc.robot.subsystems;
 
 
-import frc.robot.utilities.LoggingSystem;
+import frc.robot.utilities.logger.LoggingSystem;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 

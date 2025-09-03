@@ -1,4 +1,4 @@
-package frc.robot.utilities;
+package frc.robot.utilities.logger;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

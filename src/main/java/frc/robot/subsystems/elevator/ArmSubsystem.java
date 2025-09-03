@@ -1,8 +1,8 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.elevator;
 
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.utilities.LoggingSystem;
+import frc.robot.utilities.logger.LoggingSystem;
 
 public class ArmSubsystem {
     private Servo servo;
