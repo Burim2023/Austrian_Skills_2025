@@ -1,6 +1,6 @@
-package frc.robot.utilities;
+package frc.robot.utilities.shuffleboard;
 
-import frc.robot.utilities.LoggingSystem;
+import frc.robot.utilities.logger.LoggingSystem;
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
