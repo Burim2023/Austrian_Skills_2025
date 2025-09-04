@@ -1,15 +1,15 @@
 package frc.robot;
 
-import frc.robot.utilities.LoggingSystem;
+import frc.robot.utilities.logger.LoggingSystem;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.joystick.Gamepad;
 import frc.robot.subsystems.joystick.JoystickSubsystem;
-import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.elevator.ArmSubsystem;
 import frc.robot.subsystems.DrivetrainSubsystem;
-import frc.robot.subsystems.ExtenderSubsystem;
-import frc.robot.subsystems.GripperSubsystem;
-import frc.robot.subsystems.GripperTiltSubsystem;
-import frc.robot.utilities.ShuffleboardData;
+import frc.robot.subsystems.elevator.ExtenderSubsystem;
+import frc.robot.subsystems.gripper.GripperSubsystem;
+import frc.robot.subsystems.gripper.GripperTiltSubsystem;
+import frc.robot.utilities.shuffleboard.ShuffleboardData;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Joystick;
